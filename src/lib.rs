@@ -519,7 +519,7 @@ pub fn version_check_request(typ: String, app_version: String) -> (VersionCheckR
     let arch = std::env::consts::ARCH.to_string();
     #[allow(deprecated)]
     let device_id = fingerprint::get_fingerprint(None, None);
-    let device_id_hex = device_id.iter().map(|b| format!("{:02x}", b)).collect::<String>();
+    let device_id_hex = Config::get_id();
     (
         VersionCheckRequest {
             os,
