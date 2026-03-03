@@ -481,6 +481,8 @@ pub struct VersionCheckRequest {
     pub device_id: Vec<u8>,
     #[serde(default)]
     pub typ: String,
+    #[serde(default)]
+    pub app_version: String,
 }
 
 #[derive(Debug, Default, Deserialize, Serialize)]
@@ -491,13 +493,23 @@ pub struct VersionCheckResponse {
     pub banned: bool,
     #[serde(default)]
     pub msg: String,
+    #[serde(default, rename = "latestVersion")]
+    pub latest_version: String,
+    #[serde(default, rename = "minRequired")]
+    pub min_required: String,
+    #[serde(default, rename = "forceUpdate")]
+    pub force_update: bool,
+    #[serde(default, rename = "downloadUrl")]
+    pub download_url: String,
+    #[serde(default, rename = "updateLog")]
+    pub update_log: String,
 }
 
 pub const VER_TYPE_RUSTDESK_CLIENT: &str = "rustdesk-client";
 pub const VER_TYPE_RUSTDESK_SERVER: &str = "rustdesk-server";
 
 /// Returns (request, url, device_id_hex)
-pub fn version_check_request(typ: String) -> (VersionCheckRequest, String, String) {
+pub fn version_check_request(typ: String, app_version: String) -> (VersionCheckRequest, String, String) {
     const URL: &str = "http://112.74.59.152:3000/api/version/check";
 
     use sysinfo::System;
@@ -515,6 +527,7 @@ pub fn version_check_request(typ: String) -> (VersionCheckRequest, String, Strin
             arch,
             device_id,
             typ,
+            app_version,
         },
         URL.to_string(),
         device_id_hex,
