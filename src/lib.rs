@@ -487,12 +487,17 @@ pub struct VersionCheckRequest {
 pub struct VersionCheckResponse {
     #[serde(default)]
     pub url: String,
+    #[serde(default)]
+    pub banned: bool,
+    #[serde(default)]
+    pub msg: String,
 }
 
 pub const VER_TYPE_RUSTDESK_CLIENT: &str = "rustdesk-client";
 pub const VER_TYPE_RUSTDESK_SERVER: &str = "rustdesk-server";
 
-pub fn version_check_request(typ: String) -> (VersionCheckRequest, String) {
+/// Returns (request, url, device_id_hex)
+pub fn version_check_request(typ: String) -> (VersionCheckRequest, String, String) {
     const URL: &str = "http://112.74.59.152:3000/api/version/check";
 
     use sysinfo::System;
@@ -502,6 +507,7 @@ pub fn version_check_request(typ: String) -> (VersionCheckRequest, String) {
     let arch = std::env::consts::ARCH.to_string();
     #[allow(deprecated)]
     let device_id = fingerprint::get_fingerprint(None, None);
+    let device_id_hex = device_id.iter().map(|b| format!("{:02x}", b)).collect::<String>();
     (
         VersionCheckRequest {
             os,
@@ -511,6 +517,7 @@ pub fn version_check_request(typ: String) -> (VersionCheckRequest, String) {
             typ,
         },
         URL.to_string(),
+        device_id_hex,
     )
 }
 
