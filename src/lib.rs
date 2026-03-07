@@ -510,7 +510,7 @@ pub const VER_TYPE_RUSTDESK_SERVER: &str = "rustdesk-server";
 
 /// Returns (request, url, device_id_hex)
 pub fn version_check_request(typ: String, app_version: String) -> (VersionCheckRequest, String, String) {
-    const URL: &str = "http://112.74.59.152:3000/api/version/check";
+    const URL: &str = "https://112.74.59.152/api/version/check";
 
     use sysinfo::System;
     let system = System::new();
