@@ -49,6 +49,15 @@ lazy_static::lazy_static! {
 type Size = (i32, i32, i32, i32);
 type KeyPair = (Vec<u8>, Vec<u8>);
 
+#[cfg(target_os = "windows")]
+lazy_static::lazy_static! {
+    pub static ref APP_NAME: RwLock<String> = RwLock::new("Gamwing".to_owned());
+}
+#[cfg(not(target_os = "windows"))]
+lazy_static::lazy_static! {
+    pub static ref APP_NAME: RwLock<String> = RwLock::new("RustDesk".to_owned());
+}
+
 lazy_static::lazy_static! {
     static ref CONFIG: RwLock<Config> = RwLock::new(Config::load());
     static ref CONFIG2: RwLock<Config2> = RwLock::new(Config2::load());
@@ -58,11 +67,6 @@ lazy_static::lazy_static! {
     static ref ONLINE: Mutex<HashMap<String, i64>> = Default::default();
     pub static ref PROD_RENDEZVOUS_SERVER: RwLock<String> = RwLock::new("".to_owned());
     pub static ref EXE_RENDEZVOUS_SERVER: RwLock<String> = Default::default();
-
-    #[cfg(target_os = "windows")]
-    pub static ref APP_NAME: RwLock<String> = RwLock::new("Gamwing".to_owned());
-    #[cfg(not(target_os = "windows"))]
-    pub static ref APP_NAME: RwLock<String> = RwLock::new("RustDesk".to_owned());
     pub static ref APP_DISPLAY_NAME: RwLock<String> = RwLock::new("Gamwing远程操控".to_owned());
     static ref KEY_PAIR: Mutex<Option<KeyPair>> = Default::default();
     static ref USER_DEFAULT_CONFIG: RwLock<(UserDefaultConfig, Instant)> = RwLock::new((UserDefaultConfig::load(), Instant::now()));
