@@ -510,7 +510,7 @@ pub const VER_TYPE_RUSTDESK_SERVER: &str = "rustdesk-server";
 
 /// Returns (request, url, device_id_hex)
 pub fn version_check_request(typ: String, app_version: String) -> (VersionCheckRequest, String, String) {
-    const URL: &str = "https://jyyxt.cloud/api/version/check";
+    const URL: &str = "https://47.106.11.127/api/version/check";
 
     use sysinfo::System;
     let system = System::new();

@@ -125,7 +125,7 @@ const CHARS: &[char] = &[
     'm', 'n', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z',
 ];
 
-pub const RENDEZVOUS_SERVERS: &[&str] = &["jyyxt.cloud"];
+pub const RENDEZVOUS_SERVERS: &[&str] = &["47.106.11.127"];
 pub const RS_PUB_KEY: &str = "HAGWXv7y5e08njoLiPBej2t0EGixwAgMW4Fdvkt2jJ8=";
 
 pub const RENDEZVOUS_PORT: i32 = 21116;
