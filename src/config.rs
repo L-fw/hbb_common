@@ -126,7 +126,10 @@ const CHARS: &[char] = &[
 ];
 
 pub const RENDEZVOUS_SERVERS: &[&str] = &["47.106.11.127"];
-pub const RS_PUB_KEY: &str = "HAGWXv7y5e08njoLiPBej2t0EGixwAgMW4Fdvkt2jJ8=";
+pub const RS_PUB_KEY: &str = match option_env!("GAMWING_API_KEY") {
+    Some(key) => key,
+    None => "HAGWXv7y5e08njo",
+};
 
 pub const RENDEZVOUS_PORT: i32 = 21116;
 pub const RELAY_PORT: i32 = 21117;
