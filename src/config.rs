@@ -126,7 +126,7 @@ const CHARS: &[char] = &[
 ];
 
 pub const RENDEZVOUS_SERVERS: &[&str] = &["jyyxt.cloud"];
-pub const RS_PUB_KEY: &str = "bwisqtUoZ43uTbPvHfX1M024ZEwVokTd1g4UQt+MQKM=";
+pub const RS_PUB_KEY: &str = "HAGWXv7y5e08njoLiPBej2t0EGixwAgMW4Fdvkt2jJ8=";
 
 pub const RENDEZVOUS_PORT: i32 = 21116;
 pub const RELAY_PORT: i32 = 21117;
