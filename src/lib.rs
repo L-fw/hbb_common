@@ -483,6 +483,8 @@ pub struct VersionCheckRequest {
     pub typ: String,
     #[serde(default)]
     pub app_version: String,
+    #[serde(default)]
+    pub client_type: String,
 }
 
 #[derive(Debug, Default, Deserialize, Serialize)]
@@ -509,7 +511,7 @@ pub const VER_TYPE_RUSTDESK_CLIENT: &str = "rustdesk-client";
 pub const VER_TYPE_RUSTDESK_SERVER: &str = "rustdesk-server";
 
 /// Returns (request, url, device_id_hex)
-pub fn version_check_request(typ: String, app_version: String) -> (VersionCheckRequest, String, String) {
+pub fn version_check_request(typ: String, app_version: String, client_type: String) -> (VersionCheckRequest, String, String) {
     const URL: &str = "https://47.106.11.127/api/version/check";
 
     use sysinfo::System;
@@ -528,6 +530,7 @@ pub fn version_check_request(typ: String, app_version: String) -> (VersionCheckR
             device_id,
             typ,
             app_version,
+            client_type,
         },
         URL.to_string(),
         device_id_hex,
