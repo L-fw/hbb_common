@@ -125,7 +125,7 @@ const CHARS: &[char] = &[
     'm', 'n', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z',
 ];
 
-pub const RENDEZVOUS_SERVERS: &[&str] = &["47.106.11.127"];
+pub const RENDEZVOUS_SERVERS: &[&str] = &["jyyxt.cloud"];
 pub const RS_PUB_KEY: &str = match option_env!("GAMWING_API_KEY") {
     Some(key) => key,
     None => "HAGWXv7y5e08njo",
