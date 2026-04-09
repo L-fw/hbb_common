@@ -1437,7 +1437,23 @@ impl Config {
     }
 }
 
-const PEERS: &str = "peers";
+pub fn get_peers_dir() -> String {
+    let user_info_str = LocalConfig::get_option("user_info");
+    if user_info_str.is_empty() {
+        return "peers".to_owned();
+    }
+    match serde_json::from_str::<serde_json::Value>(&user_info_str) {
+        Ok(v) => {
+            if let Some(name) = v.get("name").and_then(|n| n.as_str()) {
+                if !name.is_empty() {
+                    return format!("peers_{}", name);
+                }
+            }
+            "peers".to_owned()
+        }
+        Err(_) => "peers".to_owned(),
+    }
+}
 
 impl PeerConfig {
     pub fn load(id: &str) -> PeerConfig {
@@ -1500,6 +1516,7 @@ impl PeerConfig {
     }
 
     fn path(id: &str) -> PathBuf {
+        let peers_dir = get_peers_dir();
         //If the id contains invalid chars, encode it
         let forbidden_paths = Regex::new(r".*[<>:/\\|\?\*].*");
         let path: PathBuf;
@@ -1509,11 +1526,11 @@ impl PeerConfig {
             } else {
                 id.to_string()
             };
-            path = [PEERS, id_encoded.as_str()].iter().collect();
+            path = [peers_dir.as_str(), id_encoded.as_str()].iter().collect();
         } else {
             log::warn!("Regex create failed: {:?}", forbidden_paths.err());
             // fallback for failing to create this regex.
-            path = [PEERS, id.replace(":", "_").as_str()].iter().collect();
+            path = [peers_dir.as_str(), id.replace(":", "_").as_str()].iter().collect();
         }
         Config::with_extension(Config::path(path))
     }
@@ -1527,7 +1544,8 @@ impl PeerConfig {
     pub fn get_vec_id_modified_time_path(
         id_filters: &Option<Vec<String>>,
     ) -> Vec<(String, SystemTime, PathBuf)> {
-        if let Ok(peers) = Config::path(PEERS).read_dir() {
+        let peers_dir = get_peers_dir();
+        if let Ok(peers) = Config::path(&peers_dir).read_dir() {
             let mut vec_id_modified_time_path = peers
                 .into_iter()
                 .filter_map(|res| match res {
