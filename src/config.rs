@@ -89,6 +89,7 @@ lazy_static::lazy_static! {
     pub static ref OVERWRITE_LOCAL_SETTINGS: RwLock<HashMap<String, String>> = Default::default();
     pub static ref HARD_SETTINGS: RwLock<HashMap<String, String>> = Default::default();
     pub static ref BUILTIN_SETTINGS: RwLock<HashMap<String, String>> = Default::default();
+    pub static ref CURRENT_USER_NAME: RwLock<String> = Default::default();
 }
 
 #[cfg(target_os = "android")]
@@ -1438,11 +1439,16 @@ impl Config {
 }
 
 pub fn get_peers_dir() -> String {
-    let current_user = LocalConfig::get_option("current_user_name");
+    let current_user = CURRENT_USER_NAME.read().unwrap().clone();
     if current_user.is_empty() {
         return "peers".to_owned();
     }
     format!("peers_{}", current_user)
+}
+
+pub fn set_current_user_name(name: String) {
+    *CURRENT_USER_NAME.write().unwrap() = name;
+    log::info!("Current user name set, peers dir: {}", get_peers_dir());
 }
 
 impl PeerConfig {
