@@ -1438,21 +1438,11 @@ impl Config {
 }
 
 pub fn get_peers_dir() -> String {
-    let user_info_str = LocalConfig::get_option("user_info");
-    if user_info_str.is_empty() {
+    let current_user = LocalConfig::get_option("current_user_name");
+    if current_user.is_empty() {
         return "peers".to_owned();
     }
-    match serde_json::from_str::<serde_json::Value>(&user_info_str) {
-        Ok(v) => {
-            if let Some(name) = v.get("name").and_then(|n| n.as_str()) {
-                if !name.is_empty() {
-                    return format!("peers_{}", name);
-                }
-            }
-            "peers".to_owned()
-        }
-        Err(_) => "peers".to_owned(),
-    }
+    format!("peers_{}", current_user)
 }
 
 impl PeerConfig {
