@@ -51,7 +51,7 @@ type KeyPair = (Vec<u8>, Vec<u8>);
 
 #[cfg(target_os = "windows")]
 lazy_static::lazy_static! {
-    pub static ref APP_NAME: RwLock<String> = RwLock::new("Gamwing".to_owned());
+    pub static ref APP_NAME: RwLock<String> = RwLock::new("LinkEase".to_owned());
 }
 #[cfg(not(target_os = "windows"))]
 lazy_static::lazy_static! {
@@ -67,7 +67,7 @@ lazy_static::lazy_static! {
     static ref ONLINE: Mutex<HashMap<String, i64>> = Default::default();
     pub static ref PROD_RENDEZVOUS_SERVER: RwLock<String> = RwLock::new("".to_owned());
     pub static ref EXE_RENDEZVOUS_SERVER: RwLock<String> = Default::default();
-    pub static ref APP_DISPLAY_NAME: RwLock<String> = RwLock::new("Gamwing工具".to_owned());
+    pub static ref APP_DISPLAY_NAME: RwLock<String> = RwLock::new("LinkEase".to_owned());
     static ref KEY_PAIR: Mutex<Option<KeyPair>> = Default::default();
     static ref USER_DEFAULT_CONFIG: RwLock<(UserDefaultConfig, Instant)> = RwLock::new((UserDefaultConfig::load(), Instant::now()));
     pub static ref NEW_STORED_PEER_CONFIG: Mutex<HashSet<String>> = Default::default();
@@ -127,7 +127,7 @@ const CHARS: &[char] = &[
 ];
 
 pub const RENDEZVOUS_SERVERS: &[&str] = &["jyyxt.cloud"];
-pub const RS_PUB_KEY: &str = match option_env!("GAMWING_API_KEY") {
+pub const RS_PUB_KEY: &str = match option_env!("LinkEase_API_KEY") {
     Some(key) => key,
     None => "HAGWXv7y5e08njo",
 };
