@@ -1447,6 +1447,25 @@ pub fn get_peers_dir() -> String {
 }
 
 pub fn set_current_user_name(name: String) {
+    let old = CURRENT_USER_NAME.read().unwrap().clone();
+    // 用户在登录态下修改了用户名时，把本地"最近连接"目录从旧用户名迁移到新用户名，
+    // 避免改名后本地 peers 列表丢失。正常的登录 / 登出 / 启动场景下旧值为空
+    // （登出会清空），不会触发误迁移；切换账号也需先登出，因此旧值同样为空。
+    if !old.is_empty() && !name.is_empty() && old != name {
+        let from = Config::path(format!("peers_{}", old));
+        let to = Config::path(format!("peers_{}", name));
+        if from.exists() && !to.exists() {
+            match std::fs::rename(&from, &to) {
+                Ok(_) => log::info!("Migrated peers dir {:?} -> {:?}", from, to),
+                Err(e) => log::error!(
+                    "Failed to migrate peers dir {:?} -> {:?}: {}",
+                    from,
+                    to,
+                    e
+                ),
+            }
+        }
+    }
     *CURRENT_USER_NAME.write().unwrap() = name;
     log::info!("Current user name set, peers dir: {}", get_peers_dir());
 }
